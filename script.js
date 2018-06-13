@@ -33,12 +33,9 @@ const operator = {
 
 function addDigits(digit) {
   if (display.innerText === "0" || secondNumber) {
-    display.innerText = digit;
-    
+    display.innerText = digit;    
   } else if (digit === ".") {
-    if (/\./.test(display.innerText) === false) {
-      display.innerText += digit;
-    }
+    if (/\./.test(display.innerText) === false) display.innerText += digit;
   } else {
     display.innerText += digit;
   }
@@ -71,6 +68,5 @@ function initializeCalculator() {
 
 function deleteDigit() {
   display.innerText = (display.innerText.length > 1 && display.innerText !== "0") ?
-    display.innerText.slice(0, -1) :
-    "0";
+    display.innerText.slice(0, -1) : "0";
 }
