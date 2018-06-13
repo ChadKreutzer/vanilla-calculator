@@ -12,6 +12,7 @@ let secondNumber;
 digits.forEach(digit => digit.addEventListener("click", function() {
   addDigits(this.innerText)
 }));
+
 operations.forEach(operation => operation.addEventListener("click", function() {
   applyOperator(this.innerText)
 }));
@@ -21,6 +22,11 @@ equals.addEventListener("click", function() {
 });
 clear.addEventListener("click", clearAll);
 del.addEventListener("click", deleteDigit);
+
+window.addEventListener("keyup", function(e){
+  console.log(e.key);
+  
+});
 
 initializeCalculator();
 
