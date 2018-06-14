@@ -9,10 +9,10 @@ let firstNumber;
 let currentOperation;
 let secondNumber;
 
+document.addEventListener("keyup", getkeys);
 digits.forEach(digit => digit.addEventListener("click", function() {
   addDigits(this.innerText)
 }));
-
 operations.forEach(operation => operation.addEventListener("click", function() {
   applyOperator(this.innerText)
 }));
@@ -23,47 +23,6 @@ equals.addEventListener("click", function() {
 clear.addEventListener("click", clearAll);
 del.addEventListener("click", deleteDigit);
 
-window.addEventListener("keyup", function(e){
-  console.log(e.key);
-  switch (e.key) {
-    case "1":
-    case "2":
-    case "3":
-    case "4":
-    case "5":
-    case "6":
-    case "7":
-    case "8":
-    case "9":
-    case "0":
-    case ".":
-      addDigits(e.key);
-      break;
-    case "Add":
-      applyOperator("+");
-      break;
-    case "Subtract":
-      applyOperator("-");
-      break;
-    case "Divide":
-      applyOperator("/");
-      break;
-    case "Multiply":
-      applyOperator("*");
-      break;
-    case "Enter":
-      doMath(currentOperation);
-      break;
-    case "Delete":
-      clearAll();
-      break;
-    case "Backspace":
-      deleteDigit();
-      break;
-  }
-  
-});
-
 initializeCalculator();
 
 const operator = {
@@ -73,9 +32,24 @@ const operator = {
   "*": (a, b) => a * b,
 };
 
+function getkeys(event) {
+  const digits = [".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  const operations = ["+", "-", "*", "/"];
+  const key = event.key;
+  
+  if (digits.some(digit => digit === key)) addDigits(key);
+  if (operations.some(operation => operation === key)) applyOperator(key);  
+  if (key === "Backspace") deleteDigit();
+  if (key === "Delete") clearAll();
+  if (key === "=" || key === "Enter") {
+    doMath(currentOperation);
+    initializeCalculator();
+  }
+}
+
 function addDigits(digit) {
   if (display.innerText === "0" || secondNumber) {
-    display.innerText = digit;    
+    display.innerText = digit;
   } else if (digit === ".") {
     if (/\./.test(display.innerText) === false) display.innerText += digit;
   } else {
@@ -85,7 +59,7 @@ function addDigits(digit) {
 }
 
 function applyOperator(operand) {
-  currentOperation && doMath(currentOperation);  
+  currentOperation && doMath(currentOperation);
   firstNumber = +display.innerText;
   currentOperation = operand;
   secondNumber = true;
