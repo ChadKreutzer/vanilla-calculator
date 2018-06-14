@@ -25,6 +25,42 @@ del.addEventListener("click", deleteDigit);
 
 window.addEventListener("keyup", function(e){
   console.log(e.key);
+  switch (e.key) {
+    case "1":
+    case "2":
+    case "3":
+    case "4":
+    case "5":
+    case "6":
+    case "7":
+    case "8":
+    case "9":
+    case "0":
+    case ".":
+      addDigits(e.key);
+      break;
+    case "Add":
+      applyOperator("+");
+      break;
+    case "Subtract":
+      applyOperator("-");
+      break;
+    case "Divide":
+      applyOperator("/");
+      break;
+    case "Multiply":
+      applyOperator("*");
+      break;
+    case "Enter":
+      doMath(currentOperation);
+      break;
+    case "Delete":
+      clearAll();
+      break;
+    case "Backspace":
+      deleteDigit();
+      break;
+  }
   
 });
 
