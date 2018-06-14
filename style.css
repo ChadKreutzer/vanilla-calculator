@@ -127,3 +127,9 @@ button {
   grid-row: 1/7;
   background-color: grey;
 }
+
+#note {
+  grid-column: 2/6;
+  grid-row-start: 7;
+  font-family: Ariel, sans-serif;
+}
