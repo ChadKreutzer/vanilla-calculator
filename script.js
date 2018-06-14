@@ -10,12 +10,16 @@ let currentOperation;
 let secondNumber;
 
 document.addEventListener("keyup", getkeys);
-digits.forEach(digit => digit.addEventListener("click", function() {
-  addDigits(this.innerText)
-}));
-operations.forEach(operation => operation.addEventListener("click", function() {
-  applyOperator(this.innerText)
-}));
+digits.forEach(digit =>
+  digit.addEventListener("click", function() {
+    addDigits(this.innerText);
+  })
+);
+operations.forEach(operation =>
+  operation.addEventListener("click", function() {
+    applyOperator(this.innerText);
+  })
+);
 equals.addEventListener("click", function() {
   doMath(currentOperation);
   initializeCalculator();
@@ -28,17 +32,17 @@ initializeCalculator();
 const operator = {
   "+": (a, b) => a + b,
   "-": (a, b) => a - b,
-  "/": (a, b) => b ? a / b : "You can't divide by zero",
-  "*": (a, b) => a * b,
+  "/": (a, b) => (b ? a / b : "ERROR"),
+  "*": (a, b) => a * b
 };
 
 function getkeys(event) {
   const digits = [".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   const operations = ["+", "-", "*", "/"];
   const key = event.key;
-  
+
   if (digits.some(digit => digit === key)) addDigits(key);
-  if (operations.some(operation => operation === key)) applyOperator(key);  
+  if (operations.some(operation => operation === key)) applyOperator(key);
   if (key === "Backspace") deleteDigit();
   if (key === "Delete") clearAll();
   if (key === "=" || key === "Enter") {
@@ -83,6 +87,10 @@ function initializeCalculator() {
 }
 
 function deleteDigit() {
-  display.innerText = (display.innerText.length > 1 && display.innerText !== "0") ?
-    display.innerText.slice(0, -1) : "0";
+  if (display.innerText !== "ERROR") {
+    display.innerText =
+      display.innerText.length > 1 && display.innerText !== "0" ?
+      display.innerText.slice(0, -1) :
+      "0";
+  }
 }
