@@ -15,15 +15,14 @@ const operator = {
 document.addEventListener("keyup", e => getkeys(e.key));
 
 buttons.addEventListener("click", function(e) {
-  if (e.path[0].localName === "button") {
-    getkeys(e.path[0].innerText);
+  if (e.target.tagName === "BUTTON") {
+    getkeys(e.target.innerText);
   }
 });
 
 initializeCalculator();
 
 function getkeys(key) {
-
   if (Number(key) || key === "0" || key === ".") {
     addDigits(key);
   }
@@ -49,7 +48,6 @@ function getkeys(key) {
 }
 
 function addDigits(digit) {
-  console.log(digit);
   if (display.innerText === "0" || secondNumber) {
     display.innerText = digit;
   }
