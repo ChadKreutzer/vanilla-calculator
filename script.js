@@ -1,33 +1,9 @@
 const display = document.getElementById("display");
-const digits = Array.from(document.getElementsByClassName("digit"));
-const operations = Array.from(document.getElementsByClassName("operation"));
-const equals = document.getElementById("equals");
-const clear = document.getElementById("clear");
-const del = document.getElementById("del");
+const buttons = document.getElementById("wrapper");
 
 let firstNumber;
 let currentOperation;
 let secondNumber;
-
-document.addEventListener("keyup", getkeys);
-digits.forEach(digit =>
-  digit.addEventListener("click", function() {
-    addDigits(this.innerText);
-  })
-);
-operations.forEach(operation =>
-  operation.addEventListener("click", function() {
-    applyOperator(this.innerText);
-  })
-);
-equals.addEventListener("click", function() {
-  doMath(currentOperation);
-  initializeCalculator();
-});
-clear.addEventListener("click", clearAll);
-del.addEventListener("click", deleteDigit);
-
-initializeCalculator();
 
 const operator = {
   "+": (a, b) => a + b,
@@ -36,27 +12,51 @@ const operator = {
   "*": (a, b) => a * b
 };
 
-function getkeys(event) {
-  const digits = [".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-  const operations = ["+", "-", "*", "/"];
-  const key = event.key;
+document.addEventListener("keyup", e => getkeys(e.key));
 
-  if (digits.some(digit => digit === key)) addDigits(key);
-  if (operations.some(operation => operation === key)) applyOperator(key);
-  if (key === "Backspace") deleteDigit();
-  if (key === "Delete") clearAll();
-  if (key === "=" || key === "Enter") {
-    doMath(currentOperation);
-    initializeCalculator();
+buttons.addEventListener("click", function(e) {
+  if (e.path[0].localName === "button") {
+    getkeys(e.path[0].innerText);
+  }
+});
+
+initializeCalculator();
+
+function getkeys(key) {
+
+  if (Number(key) || key === "0" || key === ".") {
+    addDigits(key);
+  }
+  else if (Object.keys(operator).includes(key)) {
+    applyOperator(key);
+  }
+  else {
+    switch (key) {
+      case "Backspace":
+      case "AC":
+        deleteDigit();
+        break;
+      case "Delete":
+      case "C":
+        clearAll();
+        break;
+      case "Enter":
+      case "=":
+        doMath(currentOperation);
+        initializeCalculator();
+    }
   }
 }
 
 function addDigits(digit) {
+  console.log(digit);
   if (display.innerText === "0" || secondNumber) {
     display.innerText = digit;
-  } else if (digit === ".") {
+  }
+  else if (digit === ".") {
     if (/\./.test(display.innerText) === false) display.innerText += digit;
-  } else {
+  }
+  else {
     display.innerText += digit;
   }
   secondNumber = false;
@@ -64,14 +64,14 @@ function addDigits(digit) {
 
 function applyOperator(operand) {
   currentOperation && doMath(currentOperation);
-  firstNumber = +display.innerText;
+  firstNumber = Number(display.innerText);
   currentOperation = operand;
   secondNumber = true;
 }
 
 function doMath(operand) {
   if (firstNumber !== null && secondNumber === false) {
-    display.innerText = operator[operand](firstNumber, +display.innerText);
+    display.innerText = operator[operand](firstNumber, Number(display.innerText));
   }
 }
 
