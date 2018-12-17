@@ -25,11 +25,9 @@ initializeCalculator();
 function getkeys(key) {
   if (Number(key) || key === "0" || key === ".") {
     addDigits(key);
-  }
-  else if (Object.keys(operator).includes(key)) {
+  } else if (Object.keys(operator).includes(key)) {
     applyOperator(key);
-  }
-  else {
+  } else {
     switch (key) {
       case "Backspace":
       case "AC":
@@ -48,13 +46,11 @@ function getkeys(key) {
 }
 
 function addDigits(digit) {
-  if (display.innerText === "0" || secondNumber) {
-    display.innerText = digit;
-  }
-  else if (digit === ".") {
+  if (digit === ".") {
     if (/\./.test(display.innerText) === false) display.innerText += digit;
-  }
-  else {
+  } else if (display.innerText === "0" || secondNumber) {
+    display.innerText = digit;
+  } else {
     display.innerText += digit;
   }
   secondNumber = false;
@@ -69,7 +65,10 @@ function applyOperator(operand) {
 
 function doMath(operand) {
   if (firstNumber !== null && secondNumber === false) {
-    display.innerText = operator[operand](firstNumber, Number(display.innerText));
+    display.innerText = operator[operand](
+      firstNumber,
+      Number(display.innerText)
+    );
   }
 }
 
@@ -87,8 +86,8 @@ function initializeCalculator() {
 function deleteDigit() {
   if (display.innerText !== "ERROR") {
     display.innerText =
-      display.innerText.length > 1 && display.innerText !== "0" ?
-      display.innerText.slice(0, -1) :
-      "0";
+      display.innerText.length > 1 && display.innerText !== "0"
+        ? display.innerText.slice(0, -1)
+        : "0";
   }
 }
